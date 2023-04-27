@@ -123,7 +123,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\CountryFlagController.cs" />
+    <Compile Include="Controllers\FriendshipController.cs" />
     <Compile Include="Controllers\Gmail.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NotificationsController.cs" />
