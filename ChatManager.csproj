@@ -265,7 +265,7 @@
     <Content Include="Views\Accounts\UserList.cshtml" />
     <Content Include="Views\Accounts\VerifyDone.cshtml" />
     <Content Include="Views\Accounts\VerifyError.cshtml" />
-    <Content Include="Views\Friendship\Index.cshtml" />
+    <Content Include="Views\Friendships\Index.cshtml" />
     <Content Include="Views\Chat\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
