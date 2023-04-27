@@ -263,8 +263,12 @@
     <Content Include="Views\Accounts\UserList.cshtml" />
     <Content Include="Views\Accounts\VerifyDone.cshtml" />
     <Content Include="Views\Accounts\VerifyError.cshtml" />
+    <Content Include="Views\Friendship\Index.cshtml" />
+    <Content Include="Views\Chat\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Admin\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
