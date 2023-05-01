@@ -1,8 +1,16 @@
 ﻿@model ChatManager.Models.User
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Gestion des amis";
 }
 
-<h2>Index</h2>
+<h2>Gestion des amitiés</h2>
 
+<div id="FriendsContainer" class="FriendsContainer"> <!-- Refreshed periodically --> </div>
+
+@section Scripts {
+    <script defer>
+        PartialRefresh.setTimeOutPage("@Url.Action("End","Session")");
+        let actors = new PartialRefresh("@Url.Action("Friends", "Friendships")", "FriendsContainer", 15);
+    </script>
+}

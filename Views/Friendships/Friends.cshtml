@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ChatManager.Models.User>
+
+@foreach (var item in Model)
+{
+    <a href="@Url.Action("Convo","Chat", new {id=item.Id})">
+        <div class="FriendContainer">
+            @Helper.Image(item.GetAvatarURL(), "smallAvatar")
+            <div class="ellipsis" style="text-align:center; width:inherit">@item.GetFullName()</div>
+        </div>
+    </a>
+}
+
+
