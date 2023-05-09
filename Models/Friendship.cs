@@ -9,6 +9,7 @@ namespace ChatManager.Models
     public class Friendship
     {
         public int Id { get; set; }
+        public int IdUser { get; set; }
         public int targetUserId { get; set; }
         public int friendshipStatus { get; set; }
         [JsonIgnore]

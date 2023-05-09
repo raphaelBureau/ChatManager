@@ -10,13 +10,13 @@ namespace ChatManager.Models
         public List<Friendship> ToList(int id)
         {
             var Users = DB.Users.ToList().Where(x => x.Id != id).ToList();
-            var friendships = DB.Friendships.ToList().Where(x => x.Id == id).ToList();
+            var friendships = DB.Friendships.ToList().Where(x => x.IdUser == id).ToList();
             var friend = new List<Friendship>();
             foreach (User user in Users)
             {
-                var temp = friendships.Find(x => x.Id == user.Id);
+                var temp = friendships.Find(x => x.targetUserId == user.Id);
                 var f = new Friendship();
-                f.Id = id;
+                f.IdUser = id;
                 f.targetUserId = user.Id;
                 f.friendshipStatus = temp != null ? temp.friendshipStatus : 0;
                 f.Avatar = user.GetAvatarURL();

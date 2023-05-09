@@ -29,10 +29,10 @@ namespace ChatManager.Controllers
         {
             var user = new Friendship();
             var targetFriend = new Friendship();
-            user.Id = (int)Session["currentUserId"];
+            user.IdUser = (int)Session["currentUserId"];
             user.targetUserId = id;
             user.friendshipStatus = 2;
-            targetFriend.Id = id;
+            targetFriend.IdUser = id;
             targetFriend.targetUserId = (int)Session["currentUserId"];
             targetFriend.friendshipStatus = 1;
             DB.Friendships.Add(user);

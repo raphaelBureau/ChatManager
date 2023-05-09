@@ -1,0 +1,1 @@
+[{"Id":1,"IdUser":1,"targetUserId":2,"friendshipStatus":2},{"Id":2,"IdUser":2,"targetUserId":1,"friendshipStatus":1},{"Id":3,"IdUser":1,"targetUserId":3,"friendshipStatus":2},{"Id":4,"IdUser":3,"targetUserId":1,"friendshipStatus":1}]
