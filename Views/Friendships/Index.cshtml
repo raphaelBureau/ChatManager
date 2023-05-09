@@ -1,4 +1,4 @@
-﻿@model ChatManager.Models.User
+﻿@model ChatManager.Models.Friendship
 
 @{
     ViewBag.Title = "Gestion des amis";
@@ -10,7 +10,7 @@
 
 @section Scripts {
     <script defer>
-        PartialRefresh.setTimeOutPage("@Url.Action("End","Session")");
+        @*PartialRefresh.setTimeOutPage("@Url.Action("End","Session")");*@
         let actors = new PartialRefresh("@Url.Action("Friends", "Friendships")", "FriendsContainer", 15);
     </script>
 }

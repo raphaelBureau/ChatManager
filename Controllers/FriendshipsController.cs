@@ -7,20 +7,26 @@ using System.Web.Mvc;
 
 namespace ChatManager.Controllers
 {
-    public class FriendshipController : Controller
+    public class FriendshipsController : Controller
     {
         // GET: Friendship
+        [OnlineUsers.UserAccess]
         public ActionResult Index()
         {
             return View();
         }
+        [OnlineUsers.UserAccess]
         public PartialViewResult Friends(bool forceRefresh = false)
         {
-            if (forceRefresh) //Friends has changed methode a ajouter
+            if (forceRefresh || DB.Friendships.HasChanged) //Friends has changed methode a ajouter
             {
-                return PartialView(); //retourner chaque ami sous forme de liste IENUMERABLE
+                return PartialView(DB.Friendships.ToList((int)Session["currentUserId"])); //retourner chaque ami sous forme de liste IENUMERABLE
             }
             return null;
+        }
+        public void AddFriends()
+        {
+
         }
     }
 }

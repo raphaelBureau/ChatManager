@@ -125,7 +125,7 @@
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\CountryFlagController.cs" />
-    <Compile Include="Controllers\FriendshipController.cs" />
+    <Compile Include="Controllers\FriendshipsController.cs" />
     <Compile Include="Controllers\Gmail.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NotificationsController.cs" />
@@ -133,6 +133,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Friendship.cs" />
+    <Compile Include="Models\FriendshipsRepository.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Countries.cs" />
     <Compile Include="Models\DB.cs" />

@@ -1,13 +1,27 @@
-﻿@model IEnumerable<ChatManager.Models.User>
+﻿@model IEnumerable<ChatManager.Models.Friendship>
 
 @foreach (var item in Model)
 {
-    <a href="@Url.Action("Convo","Chat", new {id=item.Id})">
+    @*<a href="@Url.Action("Convo","Chat", new {id=item.Id})">*@
         <div class="FriendContainer">
-            @Helper.Image(item.GetAvatarURL(), "smallAvatar")
-            <div class="ellipsis" style="text-align:center; width:inherit">@item.GetFullName()</div>
+            @Helper.Image(item.Avatar, "smallAvatar")
+            <div class="ellipsis" style="text-align:center; width:inherit">@item.fullName</div>
+            @Helper.OnLineStatusIcon(item.Online, item.Blocked)
+            @{ 
+                switch (item.friendshipStatus)
+                {
+                    case 0:
+                        @*Helper.IconConfirmAjaxCmd("Friendships", "AddFriend", "fa-plus-circle green", $"Voulez vous envoyer une demande d'amis à {item.fullName}");*@
+                        <span onclick="">
+                            <span class="icon fa fa-plus-circle green"
+                            title="Envoyer une demande d'ami'">
+                            </span>
+                         </span>
+                        break;
+                }
+                }
         </div>
-    </a>
+    <!--</a>-->
 }
 
 
