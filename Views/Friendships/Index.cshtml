@@ -12,17 +12,18 @@
 @section Scripts {
     
     <script defer>
-        function ajaxActionCall(actionLink, callback = null) {
+        @*PartialRefresh.setTimeOutPage("@Url.Action("End","Session")");*@
+        let friends = new PartialRefresh("@Url.Action("Friends", "Friendships")", "FriendsContainer", 15);
+        function ajaxActionCall(actionLink) {
             // Ajax Action Call to actionLink
             $.ajax({
                 url: actionLink,
                 method: 'GET',
                 success: () => {
-                    if (callback != null) callback();
+                    friends.refresh(true)
                 }
             });
         }
-        @*PartialRefresh.setTimeOutPage("@Url.Action("End","Session")");*@
-        let actors = new PartialRefresh("@Url.Action("Friends", "Friendships")", "FriendsContainer", 15);
+
     </script>
 }
