@@ -2,26 +2,30 @@
 
 @foreach (var item in Model)
 {
-    @*<a href="@Url.Action("Convo","Chat", new {id=item.Id})">*@
-        <div class="FriendContainer">
-            @Helper.Image(item.Avatar, "smallAvatar")
-            <div class="ellipsis" style="text-align:center; width:inherit">@item.fullName</div>
-            @Helper.OnLineStatusIcon(item.Online, item.Blocked)
-            @{ 
-                switch (item.friendshipStatus)
-                {
-                    case 0:
-                        @*Helper.IconConfirmAjaxCmd("Friendships", "AddFriend", "fa-plus-circle green", $"Voulez vous envoyer une demande d'amis à {item.fullName}");*@
-                        <span onclick="">
-                            <span class="icon fa fa-plus-circle green"
-                            title="Envoyer une demande d'ami'">
-                            </span>
-                         </span>
-                        break;
-                }
-                }
+    @**@
+<div class="friendContainer" style="font-size:14px">
+    <a>
+        <div class="userItem">
+            @Helper.Image(item.Avatar, "UserSmallAvatar")
+
+            <div class="ellipsis">@item.fullName</div>
         </div>
-    <!--</a>-->
+    </a>
+    @Helper.OnLineStatusIcon(item.Online, item.Blocked)
+    @{
+        switch (item.friendshipStatus)
+        {
+            case 0:
+                @*Helper.IconConfirmAjaxCmd("Friendships", "AddFriend", "fa-plus-circle green", $"Voulez vous envoyer une demande d'amis à {item.fullName}");*@
+                <span onclick="">
+                    <span class="icon fa fa-plus-circle green"
+                        title="Envoyer une demande d'ami'">
+                    </span>
+                </span>
+                break;
+            }
+        }
+</div>
 }
 
 
