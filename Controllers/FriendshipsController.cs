@@ -27,16 +27,65 @@ namespace ChatManager.Controllers
         [OnlineUsers.UserAccess]
         public void FriendRequest(int id)
         {
-            var user = new Friendship();
-            var targetFriend = new Friendship();
-            user.IdUser = (int)Session["currentUserId"];
-            user.targetUserId = id;
-            user.friendshipStatus = 2;
-            targetFriend.IdUser = id;
-            targetFriend.targetUserId = (int)Session["currentUserId"];
-            targetFriend.friendshipStatus = 1;
-            DB.Friendships.Add(user);
-            DB.Friendships.Add(targetFriend);
+            var friendships= DB.Friendships.ToList();
+            var idCurrentUser = (int)Session["currentUserId"];
+            if (friendships.Where(x => x.IdUser == idCurrentUser && x.targetUserId == id).Count() == 0)
+            {
+                var user = new Friendship();
+                var targetFriend = new Friendship();
+                user.IdUser = idCurrentUser;
+                user.targetUserId = id;
+                user.friendshipStatus = 2;
+                targetFriend.IdUser = id;
+                targetFriend.targetUserId = idCurrentUser;
+                targetFriend.friendshipStatus = 1;
+                DB.Friendships.Add(user);
+                DB.Friendships.Add(targetFriend);
+            }
+            
+        }
+        [OnlineUsers.UserAccess]
+        public void AcceptFriendRequest(int id)
+        {
+            var friendships = DB.Friendships.ToList();
+            var idCurrentUser = (int)Session["currentUserId"];
+            if (friendships.Where(x => x.IdUser == idCurrentUser && x.targetUserId == id) != null )
+            {
+                var user = friendships.Where(x => x.IdUser == idCurrentUser && x.targetUserId == id).First();
+                var targetFriend = friendships.Where(x => x.targetUserId == idCurrentUser && x.IdUser == id).First();
+                user.friendshipStatus = 3;
+                targetFriend.friendshipStatus = 3;
+                DB.Friendships.Update(user);
+                DB.Friendships.Update(targetFriend);
+            }
+        }
+        [OnlineUsers.UserAccess]
+        public void DenyFriendRequest(int id)
+        {
+            var friendships = DB.Friendships.ToList();
+            var idCurrentUser = (int)Session["currentUserId"];
+            if (friendships.Where(x => x.IdUser == idCurrentUser && x.targetUserId == id) != null)
+            {
+                var user = friendships.Where(x => x.IdUser == idCurrentUser && x.targetUserId == id).First();
+                var targetFriend = friendships.Where(x => x.targetUserId == idCurrentUser && x.IdUser == id).First();
+                user.friendshipStatus = 4;
+                targetFriend.friendshipStatus = 5;
+                DB.Friendships.Update(user);
+                DB.Friendships.Update(targetFriend);
+            }
+        }
+        [OnlineUsers.UserAccess]
+        public void DeleteFriend(int id)
+        {
+            var friendships = DB.Friendships.ToList();
+            var idCurrentUser = (int)Session["currentUserId"];
+            if (friendships.Where(x => x.IdUser == idCurrentUser && x.targetUserId == id) != null)
+            {
+                var user = friendships.Where(x => x.IdUser == idCurrentUser && x.targetUserId == id).First();
+                var targetFriend = friendships.Where(x => x.targetUserId == idCurrentUser && x.IdUser == id).First();
+                DB.Friendships.Delete(user.Id);
+                DB.Friendships.Delete(targetFriend.Id);
+            }
         }
     }
 }

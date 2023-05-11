@@ -13,68 +13,84 @@
     </a>
     @Helper.OnLineStatusIcon(item.Online, item.Blocked)
     @{
-        switch (item.friendshipStatus)
+        if (item.Blocked)
         {
-            case 0:
-                @*Helper.IconConfirmAjaxCmd("Friendships", "AddFriend", "fa-plus-circle green", $"Voulez vous envoyer une demande d'amis à {item.fullName}");*@
-                <span onclick="ajaxActionCall('/Friendships/FriendRequest?id=' + @item.targetUserId)">
-                    <span class="icon fa fa-plus-circle green"
-                          title="Envoyer une demande d'ami'">
-                    </span>
+            <span>
+                <span class="icon fa fa-ban red"
+                      title="Usager bloqué par l'administrateur">
                 </span>
-                break;
-            case 1:
-                <span onclick="">
-                    <span class="icon fa fa-check green"
-                          title="Accepter la demande d'ami">
-                    </span>
-                </span>
-                <span onclick="">
-                    <span class="icon fa fa-times red"
-                          title="refuser la demande d'ami">
-                    </span>
-                </span>
-                break;
-            case 2:
-                <span>
-                    <span class="icon fa fa-clock-o green"
-                          title="Demande d'ami en attente">
-                    </span>
-                </span>
-                <span onclick="">
-                    <span class="icon fa fa-times red"
-                          title="annuler la demande d'ami">
-                    </span>
-                </span>
-                break;
-            case 3:
-                <span>
-                    <span class="icon fa fa-check-circle green"
-                          title="Ami">
-                    </span>
-                </span>
-                <span onclick="">
-                    <span class="icon fa fa-times red"
-                          title="retirer l'ami">
-                    </span>
-                </span>
-                break;
-            case 4:
-                // clarité
-                // refresh automatique
-                // onload fonctionnement
-                break;
-            case 5:
-
-                break;
-            case 6:
-                <span>
-                    <span class="icon fa fa-ban red"
-                          title="Usager bloqué par l'administrateur">
-                    </span>
-                </span>
-                break;
+            </span>
         }
+        else
+        {
+            switch (item.friendshipStatus)
+            {
+                case 0:
+                    @*Helper.IconConfirmAjaxCmd("Friendships", "AddFriend", "fa-plus-circle green", $"Voulez vous envoyer une demande d'amis à {item.fullName}");*@
+                    <span onclick="ajaxActionCall('/Friendships/FriendRequest?id=' + @item.targetUserId)">
+                        <span class="icon fa fa-plus-circle green"
+                              title="Envoyer une demande d'ami">
+                        </span>
+                    </span>
+                    break;
+                case 1:
+                    <span onclick="ajaxActionCall('/Friendships/AcceptFriendRequest?id=' + @item.targetUserId)">
+                        <span class="icon fa fa-check green"
+                              title="Accepter la demande d'ami">
+                        </span>
+                    </span>
+                    <span onclick="ajaxActionCall('/Friendships/DenyFriendRequest?id=' + @item.targetUserId)">
+                        <span class="icon fa fa-times red"
+                              title="refuser la demande d'ami">
+                        </span>
+                    </span>
+                    break;
+                case 2:
+                    <span>
+                        <span class="icon fa fa-clock-o green"
+                              title="Demande d'ami en attente">
+                        </span>
+                    </span>
+                    <span onclick="ajaxActionCall('/Friendships/DeleteFriend?id=' + @item.targetUserId)">
+                        <span class="icon fa fa-times red"
+                              title="annuler la demande d'ami">
+                        </span>
+                    </span>
+                    break;
+                case 3:
+                    <span>
+                        <span class="icon fa fa-check-circle green"
+                              title="Ami">
+                        </span>
+                    </span>
+                    <span onclick="ajaxActionCall('/Friendships/DeleteFriend?id=' + @item.targetUserId)">
+                        <span class="icon fa fa-times red"
+                              title="retirer l'ami">
+                        </span>
+                    </span>
+                    break;
+                case 4:
+                    <span>
+                        <span class="icon fa fa-times-circle red"
+                              title="Demande d'amitité refusé'">
+                        </span>
+                    </span>
+                    <span onclick="ajaxActionCall('/Friendships/FriendRequest?id=' + @item.targetUserId)">
+                        <span class="icon fa fa-plus-circle green"
+                              title="Envoyer une demande d'ami">
+                        </span>
+                    </span>
+                    break;
+                case 5:
+                    <span>
+                        <span class="icon fa fa-times-circle red"
+                              title="Demande d'amitité refusé">
+                        </span>
+                    </span>
+                    break;
+            }
+        }
+
     }
 </div>
 }

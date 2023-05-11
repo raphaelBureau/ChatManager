@@ -13,7 +13,7 @@
     
     <script defer>
         @*PartialRefresh.setTimeOutPage("@Url.Action("End","Session")");*@
-        let friends = new PartialRefresh("@Url.Action("Friends", "Friendships")", "FriendsContainer", 15);
+        let friends = new PartialRefresh("@Url.Action("Friends", "Friendships")", "FriendsContainer", 10);
         function ajaxActionCall(actionLink) {
             // Ajax Action Call to actionLink
             $.ajax({
