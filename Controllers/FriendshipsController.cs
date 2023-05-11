@@ -20,7 +20,40 @@ namespace ChatManager.Controllers
         {
             if (forceRefresh || DB.Friendships.HasChanged || DB.Logins.HasChanged || DB.Users.HasChanged) //Friends has changed methode a ajouter
             {
-                return PartialView(DB.Friendships.ToList((int)Session["currentUserId"])); //retourner chaque ami sous forme de liste IENUMERABLE
+                List<Friendship> friends = DB.Friendships.ToList((int)Session["currentUserId"]);
+                if (Session["Filter"] != null && (bool)Session["Filter"])
+                {
+                    Func<Friendship, bool> x = (f) =>
+                    {
+                        string partialName = "";
+                        if (Session["text"] != null)
+                        {
+                            partialName = Session["text"].ToString();
+                        }
+                        if (f.Blocked)
+                        {
+                            return (bool)Session["b"] && f.fullName.Contains(partialName);
+                        }
+                        switch (f.friendshipStatus)
+                        {
+                            case 0:
+                                return (bool)Session["nF"] && f.fullName.Contains(partialName);
+                            case 1:
+                                return (bool)Session["r"] && f.fullName.Contains(partialName);
+                            case 2:
+                                return (bool)Session["p"] && f.fullName.Contains(partialName);
+                            case 3:
+                                return (bool)Session["f"] && f.fullName.Contains(partialName);
+                            case 4:
+                                return ((bool)Session["refused"] || (bool)Session["nF"]) && f.fullName.Contains(partialName);
+                            case 5:
+                                return (bool)Session["refused"] && f.fullName.Contains(partialName);
+                        }
+                        return false;
+                    };
+                    return PartialView(friends.Where(x));
+                }
+                return PartialView(friends); //retourner chaque ami sous forme de liste IENUMERABLE
             }
             return null;
         }
@@ -85,6 +118,39 @@ namespace ChatManager.Controllers
                 var targetFriend = friendships.Where(x => x.targetUserId == idCurrentUser && x.IdUser == id).First();
                 DB.Friendships.Delete(user.Id);
                 DB.Friendships.Delete(targetFriend.Id);
+            }
+        }
+        [HttpGet]
+        [OnlineUsers.UserAccess]
+        public void Filter(bool nF, bool r, bool p, bool f,bool refused, bool b)
+        {
+            if (nF || r || p || f || refused || b)
+            {
+                Session["Filter"] = true;
+                Session["nF"] = nF;
+                Session["r"] = r;
+                Session["p"] = p;
+                Session["f"] = f;
+                Session["refused"] = refused;
+                Session["b"] = b;
+            }
+            else
+            {
+                Session["Filter"] = false;
+            }
+        }
+        [HttpGet]
+        [OnlineUsers.UserAccess]
+        public void Search(string text = null)
+        {
+            if (text.Length > 0)
+            {
+                Session["Filter"] = true;
+                Session["text"] = text;
+            }
+            else
+            {
+                Session["Filter"] = false;
             }
         }
     }

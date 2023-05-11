@@ -3,8 +3,29 @@
 @{
     ViewBag.Title = "Gestion des amis";
 }
-
-<h2>Gestion des amitiés</h2>
+<div style="display:grid; grid-template-columns: 65px auto; align-items:center">
+    <img src="/friendships.png" style="width:56px"/>
+    <h2>Gestion des amitiés</h2>
+</div>
+<hr />
+<div style="display: grid; grid-template-columns: 295px 35px; column-gap: 10px; margin-bottom: 10px">
+    <input type="search" id="Search" placeholder="recherche..." class="form-control" value=""/>
+    <span id="SearchCommand" class="icon fa fa-search" style="margin-top:5px"></span>
+</div>
+<div class="friendfilters">
+    <input type="checkbox" id="filter_NotFriend" @(Session["nF"] == null || (bool)Session["nF"] ? "checked" : "") />
+    <label for="filter_NotFriend" class="fa green fa-plus-circle" title="Afficher/Masquer les usagers qui sont pas encore ami avec vous"></label>
+    <input type="checkbox" id="filter_Request" @(Session["r"] == null || (bool)Session["r"] ? "checked" : "")/>
+    <label for="filter_Request" class="fa green fa-check" title="Afficher/masquer les requêtes d'amitié reçues"></label>
+    <input type="checkbox" id="filter_Pending" @(Session["p"] == null || (bool)Session["p"] ? "checked" : "")/>
+    <label for="filter_Pending" class="fa green fa-clock-o" title="Afficher/masquer les requêtes d'amitié envoyées en attente de réponse"></label>
+    <input type="checkbox" id="filter_Friend" @(Session["f"] == null || (bool)Session["f"] ? "checked" : "")/>
+    <label for="filter_Friend" class="fa green fa-check-circle" title="Afficher/masquer tous les amis"></label>
+    <input type="checkbox" id="filter_Refused" @(Session["refused"] == null || (bool)Session["refused"] ? "checked" : "")/>
+    <label for="filter_Refused" class="fa red fa-times-circle" title="Afficher/masquer toutes les demandes refusées ou déclinées"></label>
+    <input type="checkbox" id="filter_Blocked" @(Session["b"] == null || (bool)Session["b"] ? "checked" : "")/>
+    <label for="filter_Blocked" class="fa red fa-ban" title="Afficher/masquer tous les usagers bloqués"></label>
+</div>
 <div class="main">
     <div id="FriendsContainer" class="FriendsContainer"> <!-- Refreshed periodically --> </div>
 </div>
@@ -24,6 +45,27 @@
                 }
             });
         }
+        $("input[type='checkbox']").on("change", () => FilterUser());
+        function FilterUser() {
+            let nF = $("#filter_NotFriend").prop("checked");
+            let r = $("#filter_Request").prop("checked");
+            let p = $("#filter_Pending").prop("checked");
+            let f = $("#filter_Friend").prop("checked");
+            let refused = $("#filter_Refused").prop("checked");
+            let b = $("#filter_Blocked").prop("checked");
+            ajaxActionCall('/Friendships/Filter?nF=' + nF + '&r=' + r + '&p=' + p + '&f=' + f + '&refused=' + refused + '&b=' + b);
+        }
+        $("#Search").keypress(function (e) {
+            let keycode = (e.keyCode ? e.keyCode : e.which);
+            if (keycode == 13) {
+                let searchtext = $("#Search").val();
+                ajaxActionCall('/Friendships/Search?text=' + searchtext);
+            }
+        });
+        $("#SearchCommand").click(function () {
+            let searchtext = $("#Search").val();
+            ajaxActionCall('/Friendships/Search?text=' + searchtext);
+        })
 
     </script>
 }

@@ -335,6 +335,12 @@ namespace ChatManager.Controllers
                 OnlineUsers.AddNotification(user.Id, $"Bonjour {user.GetFullName()}");
                 Session["currentLoginId"] = DB.Users.AddLogin(user.Id).Id;
                 Session["currentUserId"] = user.Id;
+                Session["nF"] = true;
+                Session["r"] = true;
+                Session["p"] = true;
+                Session["f"] = true;
+                Session["refused"] = true;
+                Session["b"] = true;
                 return RedirectToAction("About", "Home");
             }
 
