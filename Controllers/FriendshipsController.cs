@@ -18,13 +18,12 @@ namespace ChatManager.Controllers
         [OnlineUsers.UserAccess]
         public PartialViewResult Friends(bool forceRefresh = false)
         {
-            if (forceRefresh || DB.Friendships.HasChanged || DB.Logins.HasChanged || DB.Users.HasChanged) //Friends has changed methode a ajouter
+            if (forceRefresh || DB.Friendships.HasChanged || DB.Logins.HasChanged || DB.Users.HasChanged)
             {
                 List<Friendship> friends = DB.Friendships.ToList((int)Session["currentUserId"]);
-                if (Session["Filter"] != null && (bool)Session["Filter"])
-                {
                     Func<Friendship, bool> x = (f) =>
                     {
+
                         string partialName = "";
                         if (Session["text"] != null)
                         {
@@ -52,8 +51,6 @@ namespace ChatManager.Controllers
                         return false;
                     };
                     return PartialView(friends.Where(x));
-                }
-                return PartialView(friends); //retourner chaque ami sous forme de liste IENUMERABLE
             }
             return null;
         }
@@ -124,34 +121,18 @@ namespace ChatManager.Controllers
         [OnlineUsers.UserAccess]
         public void Filter(bool nF, bool r, bool p, bool f,bool refused, bool b)
         {
-            if (nF || r || p || f || refused || b)
-            {
-                Session["Filter"] = true;
                 Session["nF"] = nF;
                 Session["r"] = r;
                 Session["p"] = p;
                 Session["f"] = f;
                 Session["refused"] = refused;
                 Session["b"] = b;
-            }
-            else
-            {
-                Session["Filter"] = false;
-            }
         }
         [HttpGet]
         [OnlineUsers.UserAccess]
         public void Search(string text = null)
         {
-            if (text.Length > 0)
-            {
-                Session["Filter"] = true;
-                Session["text"] = text;
-            }
-            else
-            {
-                Session["Filter"] = false;
-            }
+            Session["text"] = text;
         }
     }
 }

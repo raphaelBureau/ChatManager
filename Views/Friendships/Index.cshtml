@@ -33,10 +33,11 @@
 @section Scripts {
     
     <script defer>
-        @*PartialRefresh.setTimeOutPage("@Url.Action("End","Session")");*@
+        // periodic refreshment
         let friends = new PartialRefresh("@Url.Action("Friends", "Friendships")", "FriendsContainer", 10);
+
+        // Ajax function
         function ajaxActionCall(actionLink) {
-            // Ajax Action Call to actionLink
             $.ajax({
                 url: actionLink,
                 method: 'GET',
@@ -45,6 +46,8 @@
                 }
             });
         }
+
+        // Filtering by friendships status
         $("input[type='checkbox']").on("change", () => FilterUser());
         function FilterUser() {
             let nF = $("#filter_NotFriend").prop("checked");
@@ -55,6 +58,8 @@
             let b = $("#filter_Blocked").prop("checked");
             ajaxActionCall('/Friendships/Filter?nF=' + nF + '&r=' + r + '&p=' + p + '&f=' + f + '&refused=' + refused + '&b=' + b);
         }
+
+        // Filtering by full name
         $("#Search").keypress(function (e) {
             let keycode = (e.keyCode ? e.keyCode : e.which);
             if (keycode == 13) {
@@ -64,6 +69,7 @@
         });
         $("#SearchCommand").click(function () {
             let searchtext = $("#Search").val();
+            console.log(searchtext);
             ajaxActionCall('/Friendships/Search?text=' + searchtext);
         })
 

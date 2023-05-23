@@ -1,8 +1,47 @@
 ﻿@model ChatManager.Models.User
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "ChatRoom";
 }
 
-<h2>Index</h2>
+<div style="display:grid; grid-template-columns: 65px auto; align-items:center">
+    <img src="../favicon.png" style="width:56px">
+    <h3>Salle de discussions</h3>
+</div>
+<hr />
+
+<div class="main">
+    <div style="display:grid; grid-template-columns:60px auto; column-gap:10px;">
+        <div class="friendsListContainer" id="friendsListContainer" title="Cliquez sur un de vos amis pour clavarder avec lui...">
+            <!-- ajouter les icons des amis -->
+        </div>
+        <div>
+            <div class="messagesPanel" id="messagesPanel" title="Cliquez sur un de vos messages pour l'éditer...'">
+                <div class="messagesHeader">
+                    <h4>Sélectionnez un ami...</h4>
+                    <div class="userItem">
+                        <!-- ajouter le nom de l'ami -->
+                    </div>
+                </div>
+                <div class="messageTime">
+                    <!-- ajouter le temps -->
+                </div>
+            </div>
+            <div class="sendMessageLayout" id="sendMessagePanel" style="display: none">
+                <input id="message" class="form-control" style="width:100% !important; max-width:1000px !important;" placeholder="Tapez votre message ici ..." title="Les urls d'image sont prises en compte.">
+                <span id="send" class="icon fa fa-paper-plane" title="Envoyer" data-placement="bottom"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script defer>
+        // periodic refreshment
+        let friends = new PartialRefresh("@Url.Action("Friends", "Chat")", "friendsListContainer", 20);
+
+
+    </script>
+}
 

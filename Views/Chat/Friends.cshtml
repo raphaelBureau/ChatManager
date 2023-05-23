@@ -1,0 +1,8 @@
+﻿@model IEnumerable<ChatManager.Models.Friendship>
+
+@foreach (var friend in Model)
+{
+    <div class="unselectedTarget" userid="@friend.targetUserId">
+        @Helper.Image(friend.Avatar, "UserSmallAvatar")
+    </div>
+}

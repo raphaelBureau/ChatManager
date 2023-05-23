@@ -2,7 +2,6 @@
 
 @foreach (var item in Model)
 {
-    @**@
 <div class="friendContainer" style="font-size:14px">
     <a>
         <div class="userItem">
@@ -26,7 +25,6 @@
             switch (item.friendshipStatus)
             {
                 case 0:
-                    @*Helper.IconConfirmAjaxCmd("Friendships", "AddFriend", "fa-plus-circle green", $"Voulez vous envoyer une demande d'amis à {item.fullName}");*@
                     <span onclick="ajaxActionCall('/Friendships/FriendRequest?id=' + @item.targetUserId)">
                         <span class="icon fa fa-plus-circle green"
                               title="Envoyer une demande d'ami">
