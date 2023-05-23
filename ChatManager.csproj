@@ -133,6 +133,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Chats.cs" />
+    <Compile Include="Models\ChatsRepository.cs" />
     <Compile Include="Models\Friendship.cs" />
     <Compile Include="Models\FriendshipsRepository.cs" />
     <Compile Include="Models\Notification.cs" />
