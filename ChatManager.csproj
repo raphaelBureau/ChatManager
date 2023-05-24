@@ -210,6 +210,7 @@
     <Content Include="App_Code\Helper.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Views\Chat\Friends.cshtml" />
+    <Content Include="Views\Chat\Chat.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

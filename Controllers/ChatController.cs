@@ -25,14 +25,29 @@ namespace ChatManager.Controllers
             }
             return null;
         }
+        [OnlineUsers.UserAccess]
         public PartialViewResult Chat(bool forceRefresh = false)
         {
             if (forceRefresh || DB.Chats.HasChanged)
             {
-                // Afficher les messages
-
+                if (Session["idFriendChatting"] != null)
+                {
+                    var u = DB.Users.Get((int)Session["idFriendChatting"]);
+                    ViewBag.Avatar = u.GetAvatarURL();
+                    ViewBag.FullName = u.GetFullName();
+                    var c = DB.Chats.GetChatByUsers((int)Session["currentUserId"], u.Id);
+                    return PartialView(c);
+                }
+                ViewBag.Avatar = null;
+                ViewBag.FullName = null;
+                return PartialView();
             }
             return null;
+        }
+        [OnlineUsers.UserAccess]
+        public void FriendChat(int id)
+        {
+            Session["idFriendChatting"] = id;
         }
         [OnlineUsers.UserAccess]
         public void SendMessage(int idtargetUser, string message)

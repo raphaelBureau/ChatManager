@@ -1,0 +1,20 @@
+﻿@model ChatManager.Models.Chats
+
+<div class="messagesHeader">
+    @if (ViewBag.Avatar == null && ViewBag.FullName == null)
+    {
+        <h4>
+            Sélectionnez un ami...
+        </h4>
+    }
+    else
+    {
+        <h4>
+            Conversation avec
+        </h4>
+        <div class="userItem">
+            @Helper.Image(ViewBag.Avatar, "UserMediumAvatar")
+            <div class="ellipsis">@ViewBag.FullName</div>
+        </div>
+    }
+</div>

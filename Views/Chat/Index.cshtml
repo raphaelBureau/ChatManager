@@ -15,17 +15,8 @@
         <div class="friendsListContainer" id="friendsListContainer" title="Cliquez sur un de vos amis pour clavarder avec lui...">
             <!-- friends of the connected user -->
         </div>
-        <div>
             <div class="messagesPanel" id="messagesPanel" title="Cliquez sur un de vos messages pour l'éditer...'">
-                <div class="messagesHeader">
-                    <h4>Sélectionnez un ami...</h4>
-                    <div class="userItem">
-                        <!-- ajouter le nom de l'ami -->
-                    </div>
-                </div>
-                <div class="messageTime">
-                    <!-- ajouter le temps -->
-                </div>
+                
             </div>
             <div class="sendMessageLayout" id="sendMessagePanel" style="display: none">
                 <input id="message" class="form-control" style="width:100% !important; max-width:1000px !important;" placeholder="Tapez votre message ici ..." title="Les urls d'image sont prises en compte.">
@@ -40,8 +31,22 @@
     <script defer>
         // periodic refreshment
         let friends = new PartialRefresh("@Url.Action("Friends", "Chat")", "friendsListContainer", 20);
-        
+        let c = new PartialRefresh("@Url.Action("Chat", "Chat")", "messagesPanel", 5)
+
+        function ajaxActionCall(actionLink, onload = null) {
+            $.ajax({
+                url: actionLink,
+                method: 'GET',
+                success: () => {
+                    if (onload != null) onload();
+                }
+            });
+        }
         let targetFriendsId = 0;
+        if ('@Session["idFriendChatting"]' != null) {
+            targetFriendsId = '@Session["idFriendChatting"]';
+        }
+
 
         $(document).on('click', '.unselectedTarget', function () {
             let target = $(".selectedTarget");
@@ -50,12 +55,14 @@
 
             $(this).removeClass("unselectedTarget");
             $(this).addClass("selectedTarget");
-
             targetFriendsId = $(this).attr("userId");
+
+            $("#sendMessagePanel").show();
+            ajaxActionCall('/Chat/FriendChat?id=' + targetFriendsId, () => c.refresh(true));
         });
 
 
-        
+
 
         //let friendsPanelUpdater = new PartialRefresh("/Chat/GetFriendsList", "friendsListContainer", 5, UpdateFriendsCallback);
         //let messagesPanelUpdater = new PartialRefresh("/Chat/GetMessages", "messagesPanel", 5, UpdateMessagesCallback);

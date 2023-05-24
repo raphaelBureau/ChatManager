@@ -2,7 +2,12 @@
 
 @foreach (var friend in Model)
 {
-    <div class="unselectedTarget" userId="@friend.targetUserId">
+    string c = "unselectedTarget";
+    if (Session["idFriendChatting"] != null && friend.targetUserId == (int)Session["idFriendChatting"])
+    {
+        c = "selectedTarget";
+    }
+    <div class="@c" userId="@friend.targetUserId">
         @Helper.Image(friend.Avatar, "UserSmallAvatar")
     </div>
 }
