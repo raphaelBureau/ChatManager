@@ -33,6 +33,7 @@ namespace ChatManager.Controllers
                 if (Session["idFriendChatting"] != null)
                 {
                     var u = DB.Users.Get((int)Session["idFriendChatting"]);
+                    ViewBag.Id = Session["currentUserId"];
                     ViewBag.Avatar = u.GetAvatarURL();
                     ViewBag.FullName = u.GetFullName();
                     var c = DB.Chats.GetChatByUsers((int)Session["currentUserId"], u.Id);
@@ -72,6 +73,38 @@ namespace ChatManager.Controllers
                 }
                 DB.Chats.Update(Chat);
             }
+        }
+        [OnlineUsers.UserAccess]
+        public void DeleteMessage(int idtargetUser, int index)
+        {
+            var chat = DB.Chats.GetChatByUsers((int)Session["currentUserId"], idtargetUser);
+            List<(DateTime date, string message)> message = null;
+            if ((int)Session["currentUserId"] == chat.UserId1)
+            {
+                message = chat.UserId1Messages;
+            }
+            else
+            {
+                message = chat.UserId2Messages;
+            }
+            message.RemoveAt(index);
+            DB.Chats.Update(chat);
+        }
+        [OnlineUsers.UserAccess]
+        public void EditMessage(int idtargetUser, string message, int index)
+        {
+            var chat = DB.Chats.GetChatByUsers((int)Session["currentUserId"], idtargetUser);
+            List<(DateTime date, string message)> m = null;
+            if ((int)Session["currentUserId"] == chat.UserId1)
+            {
+                m = chat.UserId1Messages;
+            }
+            else
+            {
+                m = chat.UserId2Messages;
+            }
+            m[index] = (m[index].date, message);
+            DB.Chats.Update(chat);
         }
     }
 }

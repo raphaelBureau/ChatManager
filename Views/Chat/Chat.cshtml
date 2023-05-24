@@ -1,5 +1,10 @@
 ﻿@model ChatManager.Models.Chats
 
+@{
+    List<(DateTime date, string message)> currentUserMessages = null;
+    List<(DateTime date, string message)> targetUserMessages = null;
+    int idtargetUser = 0;
+}
 <div class="messagesHeader">
     @if (ViewBag.Avatar == null && ViewBag.FullName == null)
     {
@@ -9,6 +14,21 @@
     }
     else
     {
+        if (Model != null)
+        {
+            if (Model.UserId1 == ViewBag.Id)
+            {
+                currentUserMessages = Model.UserId1Messages;
+                targetUserMessages = Model.UserId2Messages;
+                idtargetUser = Model.UserId2;
+            }
+            else
+            {
+                currentUserMessages = Model.UserId2Messages;
+                targetUserMessages = Model.UserId1Messages;
+                idtargetUser = Model.UserId1;
+            }
+        }
         <h4>
             Conversation avec
         </h4>
@@ -18,3 +38,68 @@
         </div>
     }
 </div>
+
+@{
+
+    if (currentUserMessages != null)
+    {
+        DateTime d = DateTime.MinValue;
+        int i = 0;
+        foreach (var message in currentUserMessages)
+        {
+            for (int j = i; j < targetUserMessages.Count && targetUserMessages[i].date < message.date; j++)
+            {
+                if ((targetUserMessages[j].date - d).TotalMinutes > 30)
+                {
+                    d = targetUserMessages[j].date;
+                    <div class="messageTime">
+                        @targetUserMessages[j].date.ToLocalTime().ToString("d MMMM yyyy - HH:mm")
+                    </div>
+                }
+                <div class="receivedLayout">
+                    <div class="received" title="@targetUserMessages[j].date.ToLocalTime().ToString("HH:mm")">
+                        <span class="token">@targetUserMessages[j].message</span>
+                    </div>
+                </div>
+                i++;
+            }
+            if ((message.date - d).TotalMinutes > 30)
+            {
+                d = message.date;
+                <div class="messageTime">
+                    @message.date.ToLocalTime().ToString("d MMMM yyyy - HH:mm")
+                </div>
+            }
+            <div class="sentLayout">
+                <div class="sent" title="@message.date.ToLocalTime().ToString("HH:mm")">
+                    <span class="token">@Helper.ParseContent(message.message)</span>
+                </div>
+            </div>
+            <div class="editMessage" style="display: none">
+                <input id="@currentUserMessages.IndexOf(message)" value="@message.message" class="sent form-control">
+                <span class="icon fa fa-check smallerIcon" title="Modifier ce message" data-placement="bottom" onclick="EditMessage(@currentUserMessages.IndexOf(message))"></span>
+                <div onclick='bootbox.confirm("Effacer ce message", function (result) { if (result) { ajaxActionCall("/Chat/DeleteMessage?idtargetUser=@idtargetUser&index=@currentUserMessages.IndexOf(message)", () => { stopEditing(); c.refresh(true) }); } })'>
+                    <span class="icon fa fa-times smallerIcon"
+                          title="Effacer ce message"
+                          data-placement="bottom">
+                    </span>
+                </div>
+            </div>
+        }
+        for (int j = i; j < targetUserMessages.Count; j++)
+        {
+            if ((targetUserMessages[j].date - d).TotalMinutes > 30)
+            {
+                d = targetUserMessages[j].date;
+                <div class="messageTime">
+                    @targetUserMessages[j].date.ToLocalTime().ToString("d MMMM yyyy - HH:mm")
+                </div>
+            }
+            <div class="receivedLayout">
+                <div class="received" title="@targetUserMessages[j].date.ToLocalTime().ToString("HH:mm")">
+                    <span class="token">@targetUserMessages[j].message</span>
+                </div>
+            </div>
+        }
+    }
+}
