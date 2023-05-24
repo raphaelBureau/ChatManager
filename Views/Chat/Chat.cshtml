@@ -72,7 +72,7 @@
             }
             <div class="sentLayout">
                 <div class="sent" title="@message.date.ToLocalTime().ToString("HH:mm")">
-                    <span class="token">@message.message</span>
+                    <span class="token">@Helper.ParseContent(message.message)</span>
                 </div>
             </div>
             <div class="editMessage" style="display: none">
