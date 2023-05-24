@@ -284,7 +284,7 @@ namespace ChatManager.Controllers
                         return RedirectToAction("EmailChangedAlert");
                     }
                     else
-                        return RedirectToAction("About", "Home");
+                    return RedirectToAction("About", "Home");
                 }
                 else
                     return RedirectToAction("Report", "Errors", new { message = "Échec de modification de profil" });
@@ -292,6 +292,64 @@ namespace ChatManager.Controllers
             ViewBag.Genders = SelectListUtilities<Gender>.Convert(DB.Genders.ToList());
             return View(currentUser);
         }
+
+        [OnlineUsers.AdminAccess]
+        public ActionResult AdminProfil(int id)
+        {
+            OnlineUsers.GetSessionUser().AcceptNotification = true;
+            ViewBag.Genders = SelectListUtilities<Gender>.Convert(DB.Genders.ToList());
+            ViewBag.UserTypes = SelectListUtilities<UserType>.Convert(DB.UserTypes.ToList());
+            User userToEdit = DB.Users.Get(id);
+            if (userToEdit != null)
+            {
+                userToEdit.ConfirmEmail = userToEdit.Email;
+                userToEdit.ConfirmPassword = userToEdit.Password;
+                return View(userToEdit);
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken()]
+        [OnlineUsers.AdminAccess]
+        public ActionResult AdminProfil(User user)
+        {
+            User currentUser = DB.Users.Get(user.Id);
+
+            //pour le modelstate
+        //    user.Password = currentUser.Password;
+            user.ConfirmPassword = user.Password;
+            user.Avatar = currentUser.Avatar;
+            user.CreationDate = currentUser.CreationDate;
+
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+            string newEmail = "";
+            if (ModelState.IsValid)
+            {
+                if (user.Email != currentUser.Email)
+                {
+                    newEmail = user.Email;
+                    user.Email = user.ConfirmEmail = currentUser.Email;
+                }
+
+                if (DB.Users.Update(user))
+                {
+                    if (newEmail != "")
+                    {
+                        SendEmailChangedVerification(user, newEmail);
+                        return RedirectToAction("EmailChangedAlert");
+                    }
+                    else
+                        return RedirectToAction("UserList", "Accounts");
+                }
+                else
+                    return RedirectToAction("Report", "Errors", new { message = "Échec de modification de profil" });
+            }
+            ViewBag.Genders = SelectListUtilities<Gender>.Convert(DB.Genders.ToList());
+            return View(currentUser);
+        }
+
         #endregion
 
         #region Login and Logout
