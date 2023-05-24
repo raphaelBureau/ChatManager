@@ -102,7 +102,12 @@ body {
     white-space: nowrap;
     overflow: hidden;
 }
-
+.token {
+    max-width: 150px !important;
+    overflow: hidden !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 .hideOverflow {
     text-overflow: ellipsis;
     overflow: hidden;

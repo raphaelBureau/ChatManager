@@ -15,8 +15,9 @@
         <div class="friendsListContainer" id="friendsListContainer" title="Cliquez sur un de vos amis pour clavarder avec lui...">
             <!-- friends of the connected user -->
         </div>
+        <div>
             <div class="messagesPanel" id="messagesPanel" title="Cliquez sur un de vos messages pour l'éditer...'">
-                
+                <!-- messages -->
             </div>
             <div class="sendMessageLayout" id="sendMessagePanel" style="display: none">
                 <input id="message" class="form-control" style="width:100% !important; max-width:1000px !important;" placeholder="Tapez votre message ici ..." title="Les urls d'image sont prises en compte.">
@@ -62,7 +63,28 @@
         });
 
 
-
+        // envoi d'un message
+        function sendMessage() {
+            var message = $('#message').val();
+            $('#message').val("");
+            if (message != "") {
+                ajaxActionCall("/Chat/SendMessage?idtargetUser=" + targetFriendsId + "&message=" + message, () => { c.refresh(true) });
+            }
+        }
+        $('#message').keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') {
+                sendMessage();
+            }
+        });
+        $('#send').click(function () {
+            sendMessage();
+        });
+        $(document).on('keyup', function (event) {
+            if (event.key == "Escape") {
+                $("#message").val("");
+            }
+        });
 
         //let friendsPanelUpdater = new PartialRefresh("/Chat/GetFriendsList", "friendsListContainer", 5, UpdateFriendsCallback);
         //let messagesPanelUpdater = new PartialRefresh("/Chat/GetMessages", "messagesPanel", 5, UpdateMessagesCallback);
@@ -92,30 +114,14 @@
         //        $("#sendMessagePanel").show()
         //    }
         //}
-        //function sendMessage() {
-        //    var message = $('#message').val();
-        //    $('#message').val("");
-        //    if (message != "") {
-        //        messagesPanelUpdater.command("/Chat/Send?message=" + message, UpdateMessagesCallback);
-        //    }
-        //}
-        //$('#message').keypress(function (event) {
-        //    var keycode = (event.keyCode ? event.keyCode : event.which);
-        //    if (keycode == '13') {
-        //        sendMessage();
-        //    }
-        //});
+        
         //$('#message').focus(function (event) {
         //    ajaxActionCall("/chat/IsTyping");
         //});
         //$('#message').blur(function (event) {
         //    ajaxActionCall("/chat/StopTyping");
         //});
-        //$(document).on('keyup', function (event) {
-        //    if (event.key == "Escape") {
-        //        $("#message").val("");
-        //    }
-        //});
+        
         //function UpdateMessagesCallback() {
         //    $("#typing").hide();
         //    $(".editMessage").hide();

@@ -1,5 +1,9 @@
 ﻿@model ChatManager.Models.Chats
 
+@{
+    List<(DateTime date, string message)> currentUserMessages = null;
+    List<(DateTime date, string message)> targetUserMessages = null;
+}
 <div class="messagesHeader">
     @if (ViewBag.Avatar == null && ViewBag.FullName == null)
     {
@@ -9,6 +13,19 @@
     }
     else
     {
+        if (Model != null)
+        {
+            if (Model.UserId1 == ViewBag.Id)
+            {
+                currentUserMessages = Model.UserId1Messages;
+                targetUserMessages = Model.UserId2Messages;
+            }
+            else
+            {
+                currentUserMessages = Model.UserId2Messages;
+                targetUserMessages = Model.UserId1Messages;
+            }
+        }
         <h4>
             Conversation avec
         </h4>
@@ -18,3 +35,36 @@
         </div>
     }
 </div>
+
+@{
+
+    if (currentUserMessages != null)
+    {
+        int i = 0;
+        foreach (var message in currentUserMessages)
+        {
+            for (int j = i; j < targetUserMessages.Count && targetUserMessages[i].date < message.date; j++)
+            {
+                <div class="receivedLayout">
+                    <div class="received" title="@targetUserMessages[i].date">
+                        <span class="token">@targetUserMessages[i].message</span>
+                    </div>
+                </div>
+                i++;
+            }
+            <div class="sentLayout">
+                <div class="sent" title="@message.date">
+                    <span class="token">@message.message</span>
+                </div>
+            </div>
+        }
+        for (int j = i; j < targetUserMessages.Count; j++)
+        {
+            <div class="receivedLayout">
+                <div class="received" title="@targetUserMessages[i].date">
+                    <span class="token">@targetUserMessages[i].message</span>
+                </div>
+            </div>
+        }
+    }
+}

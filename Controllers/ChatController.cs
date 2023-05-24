@@ -33,6 +33,7 @@ namespace ChatManager.Controllers
                 if (Session["idFriendChatting"] != null)
                 {
                     var u = DB.Users.Get((int)Session["idFriendChatting"]);
+                    ViewBag.Id = Session["currentUserId"];
                     ViewBag.Avatar = u.GetAvatarURL();
                     ViewBag.FullName = u.GetFullName();
                     var c = DB.Chats.GetChatByUsers((int)Session["currentUserId"], u.Id);
