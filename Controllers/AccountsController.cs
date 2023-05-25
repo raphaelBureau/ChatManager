@@ -433,6 +433,11 @@ namespace ChatManager.Controllers
         [OnlineUsers.AdminAccess]
         public JsonResult Delete(int userid)
         {
+            var list = DB.Chats.ToList().Where((c) => c.UserId1 == userid || c.UserId2 == userid);
+            foreach(var item in list)
+            {
+                DB.Chats.Delete(item.Id);
+            }
             return Json(DB.Users.Delete(userid), JsonRequestBehavior.AllowGet);
         }
         [OnlineUsers.AdminAccess]
