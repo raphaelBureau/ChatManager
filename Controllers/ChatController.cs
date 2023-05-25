@@ -100,16 +100,29 @@ namespace ChatManager.Controllers
         public void DeleteMessage(int idtargetUser, int index)
         {
             var chat = DB.Chats.GetChatByUsers((int)Session["currentUserId"], idtargetUser);
-            List<(DateTime date, string message)> message = null;
             if ((int)Session["currentUserId"] == chat.UserId1)
             {
-                message = chat.UserId1Messages;
+                chat.UserId1Messages.RemoveAt(index);
             }
             else
             {
-                message = chat.UserId2Messages;
+                chat.UserId2Messages.RemoveAt(index);
             }
-            message.RemoveAt(index);
+            DB.Chats.Update(chat);
+        }
+        [OnlineUsers.AdminAccess]
+        public void DeleteMessageModeration(int idUser1, int idUser2, int index)
+        {
+            var chat = DB.Chats.GetChatByUsers(idUser1, idUser2);
+
+            if (idUser1 == chat.UserId1)
+            {
+                chat.UserId1Messages.RemoveAt(index);
+            }
+            else
+            {
+                chat.UserId2Messages.RemoveAt(index);
+            }
             DB.Chats.Update(chat);
         }
         [OnlineUsers.UserAccess]

@@ -9,7 +9,7 @@
         <div class="userItem">
             @Helper.Image(User1.GetAvatarURL(), "UserMediumAvatar")
             @Helper.Image(User2.GetAvatarURL(), "UserMediumAvatar")
-            <div onclick='bootbox.confirm("Effacer ce message", function (result) { if (result) { ajaxActionCall("/Chat/DeleteMessage?", () => { chats.refresh(true) }); } })'>
+            <div onclick='bootbox.confirm("Effacer ce message", function (result) { if (result) { ajaxActionCall("/Chat/DeleteMessageModeration?idUser1=@User1.Id&idUser2=@User2.Id&index=@c.UserId1Messages.IndexOf(list)", () => { chats.refresh(true) }); } })'>
                 <span class="icon fa fa-times-circle"
                       title="Effacer ce message"
                       data-placement="bottom">
@@ -27,7 +27,7 @@
         <div class="userItem">
             @Helper.Image(User2.GetAvatarURL(), "UserMediumAvatar")
             @Helper.Image(User1.GetAvatarURL(), "UserMediumAvatar")
-            <div onclick='bootbox.confirm("Effacer ce message", function (result) { if (result) { ajaxActionCall("/Chat/DeleteMessage?", () => { chats.refresh(true) }); } })'>
+            <div onclick='bootbox.confirm("Effacer ce message", function (result) { if (result) { ajaxActionCall("/Chat/DeleteMessageModeration?idUser1=@User2.Id&idUser2=@User1.Id&index=@c.UserId2Messages.IndexOf(list)", () => { chats.refresh(true) }); } })'>
                 <span class="icon fa fa-times-circle"
                     title="Effacer ce message"
                     data-placement="bottom">
