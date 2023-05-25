@@ -6,7 +6,7 @@
     string formSubmitCaption = subscribing ? "S'inscrire" : "Enregistrer";
 }
 
-<h2>AdminProfil</h2>
+<h2>Modifier le profil</h2>
 
 @using (Html.BeginForm())
 {
@@ -65,3 +65,8 @@
         </div>
     </div>
 }
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/NotificationsHandler")
+    }
