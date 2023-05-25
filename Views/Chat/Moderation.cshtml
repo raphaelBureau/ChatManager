@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Moderation des messages";
+}
+
+<h2>Conversations</h2>
+
+<div class="ConversationContainer" id="ConversationContainer">
+
+</div>
+@section Scripts {
+
+    <script defer>
+        // periodic refreshment
+        let chats = new PartialRefresh("@Url.Action("Conversation", "Chat")", "ConversationContainer", 10);
+
+        function ajaxActionCall(actionLink, onload = null) {
+            $.ajax({
+                url: actionLink,
+                method: 'GET',
+                success: () => {
+                    if (onload != null) onload();
+                }
+            });
+        }
+    </script>
+}

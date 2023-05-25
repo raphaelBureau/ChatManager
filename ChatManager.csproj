@@ -212,6 +212,8 @@
     <Content Include="Views\Chat\Friends.cshtml" />
     <Content Include="Views\Chat\Chat.cshtml" />
     <Content Include="Views\Accounts\AdminProfil.cshtml" />
+    <Content Include="Views\Chat\Conversation.cshtml" />
+    <Content Include="Views\Chat\Moderation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

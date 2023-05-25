@@ -12,7 +12,29 @@ namespace ChatManager.Controllers
         [OnlineUsers.UserAccess]
         public ActionResult Index()
         {
+            if (OnlineUsers.GetSessionUser().IsAdmin)
+            {
+                return RedirectToAction("Moderation");
+            }
             return View();
+        }
+        [OnlineUsers.AdminAccess]
+        public ActionResult Moderation()
+        {
+            return View();
+        }
+        [OnlineUsers.AdminAccess]
+        public PartialViewResult Conversation(bool forceRefresh = false)
+        {
+            if (forceRefresh || DB.Chats.HasChanged)
+            {
+                List<Chats> chats = DB.Chats.ToList();
+
+                ViewBag.AllUser = DB.Users.ToList();
+
+                return PartialView(chats);
+            }
+            return null;
         }
         [OnlineUsers.UserAccess]
         public PartialViewResult Friends(bool forceRefresh = false)

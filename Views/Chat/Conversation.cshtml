@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ChatManager.Models.Chats>
+
+@foreach (ChatManager.Models.Chats c in Model)
+{
+    ChatManager.Models.User User1 = ((List<ChatManager.Models.User>)ViewBag.AllUser).Where((u) => u.Id == c.UserId1).First();
+    ChatManager.Models.User User2 = ((List<ChatManager.Models.User>)ViewBag.AllUser).Where((u) => u.Id == c.UserId2).First();
+    foreach (var list in c.UserId1Messages)
+    {
+        <div class="userItem">
+            @Helper.Image(User1.GetAvatarURL(), "UserMediumAvatar")
+            @Helper.Image(User2.GetAvatarURL(), "UserMediumAvatar")
+            <div onclick='bootbox.confirm("Effacer ce message", function (result) { if (result) { ajaxActionCall("/Chat/DeleteMessage?", () => { chats.refresh(true) }); } })'>
+                <span class="icon fa fa-times-circle"
+                      title="Effacer ce message"
+                      data-placement="bottom">
+                </span>
+            </div>
+            <div class="sentLayout">
+                <div class="sent" title="@list.date.ToLocalTime().ToString("HH:mm")">
+                    <span class="token">@Helper.ParseContent(list.message)</span>
+                </div>
+            </div>
+        </div>
+    }
+    foreach (var list in c.UserId2Messages)
+    {
+        <div class="userItem">
+            @Helper.Image(User2.GetAvatarURL(), "UserMediumAvatar")
+            @Helper.Image(User1.GetAvatarURL(), "UserMediumAvatar")
+            <div onclick='bootbox.confirm("Effacer ce message", function (result) { if (result) { ajaxActionCall("/Chat/DeleteMessage?", () => { chats.refresh(true) }); } })'>
+                <span class="icon fa fa-times-circle"
+                    title="Effacer ce message"
+                    data-placement="bottom">
+                </span>
+            </div>
+            <div class="sentLayout">
+                <div class="sent" title="@list.date.ToLocalTime().ToString("HH:mm")">
+                    <span class="token">@Helper.ParseContent(list.message)</span>
+                </div>
+            </div>
+        </div>
+    }
+}

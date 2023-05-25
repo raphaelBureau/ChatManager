@@ -58,7 +58,7 @@
                 }
                 <div class="receivedLayout">
                     <div class="received" title="@targetUserMessages[j].date.ToLocalTime().ToString("HH:mm")">
-                        <span class="token">@targetUserMessages[j].message</span>
+                        <span class="token">@Helper.ParseContent(targetUserMessages[j].message)</span>
                     </div>
                 </div>
                 i++;
@@ -97,7 +97,7 @@
             }
             <div class="receivedLayout">
                 <div class="received" title="@targetUserMessages[j].date.ToLocalTime().ToString("HH:mm")">
-                    <span class="token">@targetUserMessages[j].message</span>
+                    <span class="token">@Helper.ParseContent(targetUserMessages[j].message)</span>
                 </div>
             </div>
         }
